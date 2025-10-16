@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "@tiptap/core": "^3.6.5",
+    "@tiptap/pm": "^3.6.5",
+    "@tiptap/starter-kit": "^3.6.5",
+    "connect-flash": "^0.1.1",
+    "dompurify": "^3.2.7",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.18.2",
+    "flowbite-typography": "^1.0.5",
+    "he": "^1.2.0",
+    "jsdom": "^27.0.0",
+    "marked": "^16.4.0",
+    "mongoose": "^8.19.1",
+    "slugify": "^1.6.6",
+    "striptags": "^3.2.0",
+    "tailwindcss": "^4.1.14"
+  },
+  "name": "kingsley-downtodebate",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "build-css": "npx @tailwindcss/cli -i input.css -o ./public/css/output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "description": ""
+}

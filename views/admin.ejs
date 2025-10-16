@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/css/output.css">
+</head>
+<body class="bg-black text-white font-sans antialiased">
+
+  <div class="min-h-screen flex flex-col md:flex-row">
+
+    <!-- Sidebar -->
+   <%- include('admin/_sidebar') -%>
+
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8 space-y-8">
+      <section id="motions" class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+        <h2 class="text-xl font-semibold mb-4">Motions</h2>
+        <p>Manage, create and review motions.</p>
+        <div class="mt-4 flex gap-4">
+        <form action="/admin/create/motion" method="get">
+          <button class="px-4 py-2 bg-cyan-600 rounded-lg hover:bg-cyan-500 transition cursor-pointer">Create Motion Category</button>
+        </form>
+          <button class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700 transition cursor-pointer">View All</button>
+        </div>
+      </section>
+
+      <section id="transcripts" class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+        <h2 class="text-xl font-semibold mb-4">Transcripts</h2>
+        <p>View and manage generated transcripts.</p>
+        <div class="mt-4 flex gap-4">
+          <button class="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-500 transition cursor-pointer">New Transcript</button>
+          <button class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700 transition cursor-pointer">View All</button>
+        </div>
+      </section>
+
+      <section id="users" class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+        <h2 class="text-xl font-semibold mb-4">Users</h2>
+        <p>Manage user roles and activity.</p>
+        <div class="mt-4 flex gap-4">
+          <button class="px-4 py-2 bg-green-600 rounded-lg hover:bg-green-500 transition cursor-pointer">Invite User</button>
+          <button class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700 transition cursor-pointer">Manage</button>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+</body>
+</html>

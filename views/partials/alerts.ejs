@@ -1,0 +1,50 @@
+<% if (success.length > 0) { %>
+  <div id="flash-success" class="fixed right-4 top-4 z-50 rounded-xl bg-emerald-600 text-white px-3 py-2 shadow-lg flex items-center gap-2 transform translate-x-full opacity-0 transition-all duration-500 max-w-xs sm:max-w-sm w-auto">
+    <i class="fas fa-check-circle text-base sm:text-lg"></i>
+    <div class="text-xs sm:text-sm font-medium"><%= success[0] %></div>
+    <button onclick="closeFlash('flash-success')" class="ml-2 text-white/80 hover:text-white text-sm">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+<% } %>
+
+<% if (error.length > 0) { %>
+  <div id="flash-error" class="fixed right-4 top-4 z-50 rounded-xl bg-rose-600 text-white px-3 py-2 shadow-lg flex items-center gap-2 transform translate-x-full opacity-0 transition-all duration-500 max-w-xs sm:max-w-sm w-auto">
+    <i class="fas fa-exclamation-triangle text-base sm:text-lg"></i>
+    <div class="text-xs sm:text-sm font-medium"><%= error[0] %></div>
+    <button onclick="closeFlash('flash-error')" class="ml-2 text-white/80 hover:text-white text-sm">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+<% } %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Animate in
+    const flashSuccess = document.getElementById("flash-success");
+    const flashError = document.getElementById("flash-error");
+
+    if (flashSuccess) {
+      flashSuccess.classList.remove("translate-x-full", "opacity-0");
+      flashSuccess.classList.add("translate-x-0", "opacity-100");
+
+      setTimeout(() => closeFlash("flash-success"), 4000);
+    }
+
+    if (flashError) {
+      flashError.classList.remove("translate-x-full", "opacity-0");
+      flashError.classList.add("translate-x-0", "opacity-100");
+
+      setTimeout(() => closeFlash("flash-error"), 4000);
+    }
+  });
+
+  function closeFlash(id) {
+    const flash = document.getElementById(id);
+    if (flash) {
+      flash.classList.remove("translate-x-0", "opacity-100");
+      flash.classList.add("translate-x-full", "opacity-0");
+      setTimeout(() => flash.remove(), 500); // wait for animation to finish
+    }
+  }
+</script>

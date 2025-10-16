@@ -1,0 +1,58 @@
+<%- include('partials/top') -%>
+
+
+  <!-- HERO -->
+  <section class="bg-[url('/images/bg.png')] bg-cover bg-center text-white min-h-[40vh] flex items-center justify-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4">Debate Transcripts</h1>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 text-primary-100">Annotated, flowed transcripts for practice and study.</p>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Transcripts grid: symmetrical cards -->
+  <main class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-8 flex items-center justify-between">
+        <h2 class="text-2xl font-heading font-semibold text-gray-900">Transcripts</h2>
+        <p class="text-sm text-gray-600">Sorted by newest first</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <% transcripts.forEach(t=>{ %>
+          <article class="bg-white rounded-2xl pt-6 px-6 shadow-sm border border-gray-100 flex flex-col hover:shadow-md transition">
+
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0">
+                <div class="w-14 h-14 aspect-square rounded-lg bg-primary-500 flex items-center justify-center text-white text-lg font-semibold"><%= t.title.charAt(0).toUpperCase() %></div>
+              </div>
+
+              <div class="flex-1 min-w-0">
+                <a href="/transcript/<%= t.slug %>" class="text-lg lg:text-xl font-semibold text-gray-900 hover:text-primary-600 block"><%= t.title %></a>
+                <p class="mt-2 text-sm text-gray-600 line-clamp-3"><p class="mt-2 text-sm text-gray-600 line-clamp-3"><%= t.preview %></p>
+              </div>
+            </div>
+
+
+            <div class="mt-5 flex items-center justify-center border-t border-gray-100 gap-3">
+              <div class="h-18 flex items-center justify-center w-full">
+                <a href="/transcript/<%= t.slug %>"  class="inline-flex items-center gap-2 text-primary-600 font-medium hover:text-primary-700">
+                  View transcript
+                  <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </a>
+              </div>
+
+            </div>
+          </article>
+        <% }) %>
+
+
+      </div>
+    </div>
+  </main>
+
+<%- include('partials/bottom') -%>

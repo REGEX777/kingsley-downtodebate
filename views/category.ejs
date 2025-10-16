@@ -1,0 +1,41 @@
+<%- include('partials/top') -%>
+
+
+<section class="bg-[url('/images/bg.png')] text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24 text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4"><%= motion.title %></h1>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 text-primary-100">Browse motions in this category</p>
+    </div>
+</section>
+
+
+<main class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8 flex items-center justify-between">
+            <h2 class="text-2xl font-semibold text-gray-900">Motions in this category</h2>
+            <span
+                class="inline-flex items-center px-2.5 py-1 rounded-full bg-white text-gray-700 text-sm border border-gray-200"><%= (motion.motions || []).length %>
+                motions</span>
+        </div>
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% (motion.motions || []).forEach(function(m){ %>
+            <article class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2"><a href="/motions/view/i/<%= motion.slug %>/<%= m.slug %>"
+                        class="hover:underline"><%= m.name %></a></h3>
+                <a class="text-sm text-gray-600 truncate cursor-pointer hover:text-blue-600">
+                    Click Here</a>
+            </article>
+            <% }) %>
+
+
+            <% if (!motion.motions || motion.motions.length === 0) { %>
+            <div class="col-span-full text-center text-gray-600">No motions found in this category.</div>
+            <% } %>
+        </div>
+    </div>
+</main>
+
+
+<%- include('partials/bottom') -%>

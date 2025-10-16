@@ -1,0 +1,28 @@
+<%- include('partials/top') -%>
+
+
+<section class="bg-[url('/images/bg.png')] text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24 text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4"><%= transcript.title %></h1>
+    </div>
+</section>
+
+
+<main class="py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <article class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+            <div class="prose max-w-none">
+                <%- transcript.body %>
+            </div>
+        </article>
+
+
+        <div class="mt-6 flex gap-3">
+            <a href="/transcript" class="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200">Back
+                to transcripts</a>
+        </div>
+    </div>
+</main>
+
+
+<%- include('partials/bottom') -%>

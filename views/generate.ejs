@@ -1,0 +1,302 @@
+<%- include('partials/top') -%>
+
+<section class="bg-[url('/images/bg.png')] bg-cover bg-center text-white min-h-[40vh] flex items-center justify-center">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">Random Motion Generator</h1>
+      <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 text-primary-100">Create practice-ready debate motions instantly.</p>
+    </div>
+  </div>
+</section>
+
+<main class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-8 flex items-center justify-between">
+      <h2 class="text-2xl font-heading font-semibold text-gray-900">All Categories</h2>
+      <p class="text-sm text-gray-600">Click a category to view briefs, transcripts & analysis</p>
+    </div>
+
+    <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8">
+      <h2 class="text-2xl font-heading font-semibold text-gray-900 mb-6">Customize Your Motion</h2>
+
+      <form id="generateForm" action="/generate-motion" method="post" class="space-y-6">
+        <input type="hidden" name="format" id="inputFormat" value="policy">
+        <input type="hidden" name="difficulty" id="inputDifficulty" value="intermediate">
+        <input type="hidden" name="topic" id="inputTopic" value="politics">
+
+        <div class="space-y-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-3">Debate Format</label>
+            <div id="formats" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <button type="button" data-value="policy" class="format-btn py-3 px-4 border rounded-lg text-sm font-medium">Policy</button>
+              <button type="button" data-value="public-forum" class="format-btn py-3 px-4 border rounded-lg text-sm font-medium">Public Forum</button>
+              <button type="button" data-value="parliamentary" class="format-btn py-3 px-4 border rounded-lg text-sm font-medium">Parliamentary</button>
+              <button type="button" data-value="lincoln-douglas" class="format-btn py-3 px-4 border rounded-lg text-sm font-medium">Lincoln-Douglas</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-3">Difficulty Level</label>
+            <div id="difficulties" class="grid grid-cols-3 gap-3">
+              <button type="button" data-value="beginner" class="difficulty-btn py-3 px-4 border rounded-lg text-sm font-medium">Beginner</button>
+              <button type="button" data-value="intermediate" class="difficulty-btn py-3 px-4 border rounded-lg text-sm font-medium">Intermediate</button>
+              <button type="button" data-value="advanced" class="difficulty-btn py-3 px-4 border rounded-lg text-sm font-medium">Advanced</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-3">Topic Area</label>
+            <div id="topics" class="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <button type="button" data-value="politics" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium">Politics</button>
+              <button type="button" data-value="ethics" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium">Ethics</button>
+              <button type="button" data-value="economics" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium">Economics</button>
+              <button type="button" data-value="technology" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium">Technology</button>
+              <button type="button" data-value="environment" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium">Environment</button>
+              <button type="button" data-value="education" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium">Education</button>
+            </div>
+          </div>
+
+          <div class="pt-4">
+            <button id="generateBtn" type="submit" class="w-full bg-primary-500 hover:bg-primary-600 text-white py-4 px-6 rounded-lg font-semibold text-lg transition duration-150 ease-in-out shadow-md flex items-center justify-center gap-3">
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+              </svg>
+              Generate Motion
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div id="resultsSection" class="hidden">
+      <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-heading font-semibold text-gray-900">Generated Motion</h2>
+          <div class="flex items-center gap-2 text-sm text-gray-500">
+            <span id="motionFormat" class="inline-flex items-center px-2.5 py-1 rounded-full bg-gray-100 text-gray-700">Policy</span>
+            <span id="motionDifficulty" class="inline-flex items-center px-2.5 py-1 rounded-full bg-gray-100 text-gray-700">Intermediate</span>
+          </div>
+        </div>
+
+        <div id="motionCard" class="bg-primary-50 border border-primary-200 rounded-xl p-6 mb-6">
+          <div class="text-center">
+            <p id="motionText" class="text-xl md:text-2xl font-heading font-semibold text-primary-800 leading-relaxed"></p>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100">
+          <button id="regenerateBtn" class="flex-1 bg-primary-500 hover:bg-primary-600 text-white py-3 px-6 rounded-lg font-medium transition flex items-center justify-center gap-2">
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/></svg>
+            Generate Another
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="loadingSection" class="hidden bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+      <div class="text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
+          <svg class="h-8 w-8 text-primary-500 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        </div>
+        <h3 class="text-xl font-heading font-semibold text-gray-900 mb-2">Generating Your Motion</h3>
+        <p class="text-gray-600">Our AI is crafting a unique debate motion based on your preferences...</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<%- include('partials/bottom') -%>
+
+<style>
+  .toggle-active {
+    background-color: #06b6d4;
+    color: white !important;
+    border-color: #0891b2 !important;
+  }
+  .toggle-inactive {
+    background-color: transparent;
+    color: #374151;
+    border-color: #e5e7eb;
+  }
+</style>
+
+<script>
+(function () {
+  const ACTIVE_CLS = 'toggle-active';
+  const INACTIVE_CLS = 'toggle-inactive';
+
+  function initToggleGroup(containerSelector, btnSelector, inputId, defaultValue) {
+    const container = document.querySelector(containerSelector);
+    const input = document.getElementById(inputId);
+    if (!container || !input) return;
+    const buttons = Array.from(container.querySelectorAll(btnSelector));
+    if (!buttons.length) return;
+
+    function activate(btn) {
+      buttons.forEach(b => {
+        b.classList.remove(ACTIVE_CLS);
+        b.classList.add(INACTIVE_CLS);
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.remove(INACTIVE_CLS);
+      btn.classList.add(ACTIVE_CLS);
+      btn.setAttribute('aria-pressed', 'true');
+      input.value = btn.dataset.value;
+      if (inputId === 'inputFormat') {
+        const el = document.getElementById('motionFormat');
+        if (el) el.textContent = btn.textContent.trim();
+      }
+      if (inputId === 'inputDifficulty') {
+        const el = document.getElementById('motionDifficulty');
+        if (el) el.textContent = btn.textContent.trim();
+      }
+    }
+
+    buttons.forEach(btn => {
+      btn.setAttribute('role', 'button');
+      btn.setAttribute('tabindex', '0');
+      btn.classList.add(INACTIVE_CLS);
+      btn.setAttribute('aria-pressed', 'false');
+      btn.addEventListener('click', () => activate(btn));
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activate(btn);
+        }
+      });
+    });
+
+    const initial = defaultValue || input.value || (buttons[0] && buttons[0].dataset.value);
+    const initialBtn = buttons.find(b => b.dataset.value === initial) || buttons[0];
+    if (initialBtn) activate(initialBtn);
+  }
+
+  function typeOut(text, el, baseMs = 10) {
+    return new Promise(resolve => {
+      el.textContent = '';
+      let i = 0;
+      (function step() {
+        if (i >= text.length) return resolve();
+        el.textContent += text[i++];
+        setTimeout(step, baseMs + Math.random() * (baseMs * 2));
+      })();
+    });
+  }
+
+  async function fetchGenerate(format, difficulty, topic) {
+    const resp = await fetch('/generate-motion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ format, difficulty, topic })
+    });
+    if (!resp.ok) {
+      const txt = await resp.text().catch(()=>resp.statusText);
+      throw new Error(txt || 'Generate error');
+    }
+    const ctype = resp.headers.get('content-type') || '';
+    if (ctype.includes('application/json')) {
+      const json = await resp.json();
+      return json.text ?? json.result ?? JSON.stringify(json);
+    } else {
+      return await resp.text();
+    }
+  }
+
+  async function postSave(payload) {
+    const resp = await fetch('/save-motion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) {
+      const txt = await resp.text().catch(()=>resp.statusText);
+      throw new Error(txt || 'Save error');
+    }
+    const ctype = resp.headers.get('content-type') || '';
+    if (ctype.includes('application/json')) return await resp.json();
+    return { ok: true };
+  }
+
+  async function postSave(payload) {
+    const resp = await fetch('/save-motion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) {
+      const txt = await resp.text().catch(()=>resp.statusText);
+      throw new Error(txt || 'Save error');
+    }
+    return resp.json().catch(()=>({ ok: true }));
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initToggleGroup('#formats', '.format-btn', 'inputFormat', 'policy');
+    initToggleGroup('#difficulties', '.difficulty-btn', 'inputDifficulty', 'intermediate');
+    initToggleGroup('#topics', '.topic-btn', 'inputTopic', 'politics');
+
+    const form = document.getElementById('generateForm');
+    const results = document.getElementById('resultsSection');
+    const loading = document.getElementById('loadingSection');
+    const motionTextEl = document.getElementById('motionText');
+    const forList = document.getElementById('forList');
+    const againstList = document.getElementById('againstList');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const format = document.getElementById('inputFormat').value;
+      const difficulty = document.getElementById('inputDifficulty').value;
+      const topic = document.getElementById('inputTopic').value;
+
+      results.classList.add('hidden');
+      loading.classList.remove('hidden');
+      motionTextEl.textContent = '';
+      forList.innerHTML = '';
+      againstList.innerHTML = '';
+
+      try {
+        const text = await fetchGenerate(format, difficulty, topic);
+        loading.classList.add('hidden');
+        results.classList.remove('hidden');
+        await typeOut(String(text || ''), motionTextEl, 8);
+
+      } catch (err) {
+        loading.classList.add('hidden');
+        results.classList.remove('hidden');
+        motionTextEl.textContent = 'Error: ' + (err.message || 'Failed to generate');
+      }
+    });
+
+    document.getElementById('regenerateBtn').addEventListener('click', () => {
+      document.getElementById('generateBtn').click();
+    });
+
+    document.getElementById('saveMotionBtn').addEventListener('click', async () => {
+      const format = document.getElementById('inputFormat').value;
+      const difficulty = document.getElementById('inputDifficulty').value;
+      const topic = document.getElementById('inputTopic').value;
+      const text = document.getElementById('motionText').textContent || '';
+      if (!text.trim()) return alert('Generate a motion first');
+
+      const payload = { title: text.trim(), htmlBody: `<p>${escapeHtml(text.trim())}</p>`, format, difficulty, topic };
+      try {
+        const resp = await postSave(payload);
+        if (resp && resp.ok) {
+          alert('Motion saved');
+        } else {
+          alert('Save failed');
+        }
+      } catch (err) {
+        alert('Save failed: ' + (err.message || ''));
+      }
+    });
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function (m) {
+        return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[m];
+      });
+    }
+  });
+})();
+</script>

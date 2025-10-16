@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard - Transcripts</title>
+  <link rel="stylesheet" href="/css/output.css">
+</head>
+
+<body class="bg-black text-white font-sans antialiased">
+
+  <%- include('../../partials/alerts') -%>
+
+  <div class="min-h-screen flex flex-col md:flex-row">
+
+  <%- include('../_sidebar') -%>
+
+
+    <div class="flex-1 p-8">
+      <div class="max-w-4xl mx-auto">
+        <header class="mb-8 flex items-center justify-between">
+          <h1 class="text-2xl font-semibold">Transcripts</h1>
+          <a href="/admin/transcripts/new" class="text-sm bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700 transition">New Transcript</a>
+        </header>
+
+        <section id="transcriptsList" class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+          <% if (!transcripts || transcripts.length === 0) { %>
+            <div class="text-gray-400">No transcripts yet.</div>
+          <% } else { %>
+            <ul class="space-y-3">
+              <% transcripts.forEach(function(t){ %>
+                <li class="flex items-center justify-between bg-gray-900 p-3 rounded-lg border border-gray-700">
+                  <div class="flex items-center gap-4">
+                    <a href="/transcript/<%= t._id %>" class="text-lg font-medium hover:underline">
+                      <%= t.title %>
+                    </a>
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    <a href="/admin/transcripts/edit/<%= t._id %>" class="px-3 py-1 bg-cyan-600 rounded-md text-sm hover:bg-cyan-500 transition">Edit</a>
+                    <form action="/admin/transcripts/delete" method="POST" onsubmit="return confirm('Delete this transcript — this cannot be undone?');">
+                        <input type="text" value="<%= t._id %>" name="id" hidden>
+                        <button type="submit" class="px-3 py-1 bg-red-600 rounded-md text-sm hover:bg-red-500 transition">Delete</button>
+                    </form>
+                  </div>
+                </li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </section>
+
+        <div class="mt-6 flex justify-between items-center text-sm text-gray-400">
+          <div>
+            Showing <%= transcripts ? transcripts.length : 0 %> transcripts
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

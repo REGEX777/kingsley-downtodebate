@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard - Edit Transcript</title>
+  <link rel="stylesheet" href="/css/output.css">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+  <style>
+    /* Make sure the editor area has a sensible min-height */
+    #editor { min-height: 220px; }
+  </style>
+</head>
+
+<body class="bg-black text-white font-sans antialiased">
+
+  <%- include('../../partials/alerts') -%>
+
+  <div class="min-h-screen flex flex-col md:flex-row">
+
+    
+  <%- include('../_sidebar') -%>
+
+
+    
+    <div class="flex-1 p-8">
+      <div class="max-w-4xl mx-auto">
+        <header class="mb-8 flex items-center justify-between">
+          <h1 class="text-2xl font-semibold">Edit Transcript</h1>
+          <a href="/admin/transcripts" class="text-sm bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700 transition">Back to list</a>
+        </header>
+
+        
+        <form id="motionEditForm" action="/admin/transcripts/edit" method="post" class="space-y-6">
+            <input type="text" value="<%= transcript._id %>" name="id" hidden>
+          <section class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium mb-2">Title</label>
+                <input name="title" value="<%= transcript.title %>" required
+                  class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:border-cyan-500 transition">
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium mb-2">Body</label>
+                
+                <div id="editor" class="bg-white text-black"></div>
+              </div>
+            </div>
+          </section>
+
+          
+          
+          <input type="hidden" name="original" id="hiddenOriginal">
+          <input type="hidden" name="body" id="hiddenBody">
+
+          
+          <div class="flex items-center gap-3">
+            <button type="submit" class="px-6 py-3 bg-green-600 rounded-lg hover:bg-green-500 transition font-medium">Save Changes</button>
+            <a href="/admin/transcripts" class="px-6 py-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition font-medium">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+  <script>
+    const originalString = <%- JSON.stringify(transcript.original || '') %>;
+
+    let originalDelta = null;
+    if (originalString) {
+      try {
+        originalDelta = JSON.parse(originalString);
+      } catch (err) {
+        console.error('Failed to parse transcript.original:', err);
+        originalDelta = null;
+      }
+    }
+
+    const quill = new Quill('#editor', {
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline'],
+          ['link', 'blockquote', 'code-block', 'image'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ header: [1, 2, 3, false] }]
+        ]
+      },
+      theme: 'snow'
+    });
+
+    if (originalDelta) {
+      if (Array.isArray(originalDelta)) {
+        try {
+          quill.setContents({ ops: originalDelta });
+        } catch (err) {
+          console.warn('setContents failed with array ops, falling back to pasteHTML', err);
+          if (typeof <%- JSON.stringify(transcript.body || '') %> === 'string') {
+            quill.clipboard.dangerouslyPasteHTML(<%- JSON.stringify(transcript.body || '') %>);
+          }
+        }
+      } else if (originalDelta.ops) {
+        quill.setContents(originalDelta);
+      } else {
+        const htmlFallback = <%- JSON.stringify(transcript.body || '') %>;
+        if (htmlFallback) quill.clipboard.dangerouslyPasteHTML(htmlFallback);
+      }
+    } else {
+      const htmlFallback = <%- JSON.stringify(transcript.body || '') %>;
+      if (htmlFallback) quill.clipboard.dangerouslyPasteHTML(htmlFallback);
+    }
+
+    const form = document.getElementById('motionEditForm');
+    form.addEventListener('submit', (e) => {
+      const delta = quill.getContents();
+      const ops = delta && delta.ops ? delta.ops : delta; // handle both shapes
+      document.getElementById('hiddenOriginal').value = JSON.stringify(ops);
+
+      document.getElementById('hiddenBody').value = quill.root.innerHTML;
+    });
+  </script>
+</body>
+
+</html>

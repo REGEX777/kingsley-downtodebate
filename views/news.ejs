@@ -1,0 +1,33 @@
+<%- include('./partials/top') -%>
+<section class="bg-[url('/images/bg.png')] bg-cover bg-center text-white min-h-[40vh] flex items-center justify-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">News Updates</h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 text-primary-100">Find all the news update regarding down to debate here.</p>
+        </div>
+    </div>
+</section>
+<main class="py-16 bg-gray-50">
+    <div class="w-[95%] max-w-7xl mx-auto">
+        <div class="mb-8 flex items-center justify-between">
+            <h2 class="text-2xl font-heading font-semibold text-gray-900">News Updates</h2>
+        </div>
+    </div>
+
+<div class="flex flex-col w-full items-center justify-center gap-5">
+  <% news.forEach(n =>{ %>
+    <div class="w-[95%] max-w-7xl bg-gray-200 rounded-lg flex flex-col py-5 gap-3 px-6">
+      <div class="w-full flex items-start justify-start">
+        <p class="text-2xl font-semibold text-gray-900"><%= n.title %></p>
+      </div>
+
+      <div class="w-full flex flex-col items-start justify-start">
+        <p class="text-base text-gray-800 whitespace-normal break-all">
+          <%= n.body %>
+        </p>
+      </div>
+    </div>
+  <% }) %>
+</div>
+</main>
+<%- include('./partials/bottom') -%>

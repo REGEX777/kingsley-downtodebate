@@ -1,0 +1,59 @@
+<%- include('partials/top') -%>
+
+  <section class="bg-[url('/images/bg.png')] bg-cover bg-center text-white min-h-[40vh] flex items-center justify-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">Motion Categories</h1>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8 text-primary-100">Browse categories to find concise motion briefs and curated resources for each topic area.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Grid -->
+  <main class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-8 flex items-center justify-between">
+        <h2 class="text-2xl font-heading font-semibold text-gray-900">All Categories</h2>
+        <p class="text-sm text-gray-600">Click a category to view briefs, transcripts & analysis</p>
+      </div>
+
+    <div id="categoriesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Policy -->
+    <% motions.forEach(m => { %> 
+        <article class="group bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex flex-col h-full transition-transform transform hover:-translate-y-0.5 hover:shadow-lg focus-within:ring-2 focus-within:ring-primary-200">
+            <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+                <div class="w-14 h-14 aspect-square rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white text-lg font-semibold">P</div>
+            </div>
+
+            <div class="flex-1 min-w-0">
+                <a href="/motions/<%= m.slug %>" class="block text-lg lg:text-xl font-semibold text-gray-900 hover:text-primary-600 truncate"><%= m.title %></a>
+                <p class="mt-2 text-sm text-gray-600 line-clamp-3"><%= m.description %></p>
+            </div>
+            </div>
+
+            <div class="mt-4 flex items-center justify-between text-sm text-gray-500">
+            <div class="inline-flex items-center gap-3">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 text-xs">
+                <%= (m && m.motions && m.motions.length) || 0 %> Motions
+                </span>
+            </div>
+
+            <div class="ml-4 flex items-center gap-3">
+                <a href="/motions/<%= m.slug %>" class="inline-flex items-center gap-2 text-primary-600 font-medium group-hover:text-primary-700">
+                Explore
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+                </a>
+            </div>
+            </div>
+        </article>        
+    <% }) %>
+
+    </div>
+
+    </div>
+  </main>
+
+<%- include('partials/bottom') -%>

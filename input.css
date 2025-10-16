@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+@import "tailwindcss";
+@plugin "flowbite-typography";
+
+
+@theme{
+    --font-sans: 'Source Sans 3', 'sans-serif';
+    --font-sans: 'Montserrat', 'sans-serif';
+
+    --color-primary-50:  #f0f7ff;
+    --color-primary-100: #e1effe;
+    --color-primary-200: #bae0fe;
+    --color-primary-300: #7cc4fd;
+    --color-primary-400: #36a3f7;
+    --color-primary-500: #1e78eb;
+    --color-primary-600: #026dc6;
+    --color-primary-700: #0356a1;
+    --color-primary-800: #074885;
+    --color-primary-900: #0c3a6e;
+}
