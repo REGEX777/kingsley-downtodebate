@@ -87,7 +87,7 @@
                   <form action="/admin/motion/category/delete" method="post">
                     <input type="text" value="<%= motion._id %>" name="motionCategoryId" hidden>
                     <input type="text" value="<%= m._id %>" name="motionId" hidden>
-                    <button type="submit"
+                    <button type="submit" onclick="confirm(`Are you sure?`)"
                       class="remove-motion px-3 py-1 text-sm rounded bg-red-600 hover:bg-red-500 transition">Delete</button>
                   </form>
                 </div>

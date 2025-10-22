@@ -94,7 +94,6 @@ router.post('/category/:id/create', async (req, res)=>{
 
         const id = req.params.id;
         const { title, body } = req.body;
-        console.log(req.body)
 
         if (!title || typeof title !== 'string' || !title.trim()) {
             return res.status(400).json({ ok: false, error: 'Missing title' });
@@ -131,7 +130,6 @@ router.post('/category/:id/create', async (req, res)=>{
 
 router.post('/edit', async (req, res)=>{
     try{
-        console.log(req.body)
         const { id, title } = req.body;
         let { description } = req.body;
 
@@ -208,7 +206,7 @@ router.post('/category/delete', async (req, res) => {
     );
     if (result.modifiedCount && result.modifiedCount > 0) {
         req.flash('error', 'Deleted Succesfully')
-        res.redirect(`/admin/motion/view/${motionCategoryId}`)
+        return res.redirect(`/admin/motion/view/${motionCategoryId}`)
     }
     return res.status(404).json({ success: false, message: 'Motion or category not found' });
   } catch (err) {
