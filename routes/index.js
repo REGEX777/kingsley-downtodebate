@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express';
 import striptags from 'striptags';
+import { GoogleGenAI } from "@google/genai";
 import he from 'he';
 
 import Motion from '../models/Motion.js';
@@ -9,6 +10,7 @@ import News from '../models/News.js';
 import Application from '../models/Applications.js';
 
 const router = express.Router();
+const ai = new GoogleGenAI({apiKey: process.env.GEMINI_KEY});
 
 
 router.get('/', (req, res)=>{
@@ -233,20 +235,15 @@ router.post('/generate-motion', async (req, res) => {
   try {
     const { format, difficulty, topic } = req.body;
 
-    const response = await fetch('https://ai.hackclub.com/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: "You generate concise, smart debate motions." },
-          { role: "user", content: `Generate only a motion for a ${difficulty} level ${format} debate on: ${topic}. NOTHING ELSE. Only provide plain text, avoid extra Markdown, HTML or <think> tags.` }
-        ]
-      })
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: `Generate only a motion for a ${difficulty} level ${format} debate on: ${topic}. NOTHING ELSE. Only provide plain text, avoid extra Markdown, HTML or <think> tags.` ,
+      config: {
+        systemInstruction: "You generate concise, smart debate motions"
+      }
     });
 
-    const data = await response.json();
-    let text = data?.choices?.[0]?.message?.content || "Something went wrong, try again later.";
+    let text = response.text || "Something went wrong, try again later.";
 
     text = text.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
 
