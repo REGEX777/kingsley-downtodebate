@@ -74,7 +74,7 @@
 
     const form = document.querySelector('form');
     form.addEventListener('formdata', (event) => {
-        // Append Quill content before submitting
+        console.log(quill.getContents().ops)
         event.formData.append('body', JSON.stringify(quill.getContents().ops));
     });
     </script>

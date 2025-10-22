@@ -94,6 +94,7 @@ router.post('/category/:id/create', async (req, res)=>{
 
         const id = req.params.id;
         const { title, body } = req.body;
+        console.log(req.body)
 
         if (!title || typeof title !== 'string' || !title.trim()) {
             return res.status(400).json({ ok: false, error: 'Missing title' });
