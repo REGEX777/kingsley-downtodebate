@@ -3,12 +3,13 @@ import bcrypt from 'bcrypt'
 
 import Invite from '../models/Invite.js';
 import User from '../models/User.js';
+import { isLoggedOut } from '../middleware/isLoggedOut.js';
 
 
 const router = express.Router();
 
 
-router.get('/:code', async (req, res)=>{
+router.get('/:code', isLoggedOut, async (req, res)=>{
     try{
         const code = req.params.code;
         const invite = await Invite.findOne({code: code});

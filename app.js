@@ -54,12 +54,15 @@ import index from './routes/index.js'
 import admin from './routes/admin.js'
 import ivnite from './routes/invite.js'
 import login from './routes/login.js'
+import logout from './routes/logout.js'
 
 // routes
 app.use('/', index)
 app.use('/admin', isLoggedIn, isAdmin, admin)
 app.use('/invite', ivnite)
 app.use('/login', login)
+app.use('/logout', logout)
+
 
 app.listen(port, ()=>{
     console.log(`App started on port: ${port}`)

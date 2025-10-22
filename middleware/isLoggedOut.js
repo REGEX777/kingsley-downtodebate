@@ -3,5 +3,6 @@ export function isLoggedOut(req, res, next){
         return next();
     }
 
+    req.flash('error', 'Please log out first.')
     res.redirect('/')
 }
