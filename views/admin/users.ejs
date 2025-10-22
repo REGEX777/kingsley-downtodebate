@@ -47,7 +47,7 @@
                             <!-- copy icon -->
                             <p data-tooltip-target="tooltip-default-<%= i %>"
                                 class="text-gray-400 hover:text-white cursor-pointer transition-colors"
-                                onclick="copyInviteCode('<%= url %>invite/<%= invite.code %>', <%= i %>)">
+                                onclick="copyInviteCode('<%= url %>/invite/<%= invite.code %>', <%= i %>)">
                                 <i class="fa-solid fa-copy"></i>
                             </p>
                         </div>
@@ -106,6 +106,9 @@
                     <% users.forEach((user) => { %>
 
                     <div class="w-full bg-[#101828] rounded-lg p-5 flex flex-col gap-4">
+                        <div class="py-3 px-5 bg-black rounded-lg text-white font-mono">
+                            <p><%= user.username %></p>
+                        </div>
                         <div class="py-3 px-5 bg-black rounded-lg text-white font-mono">
                             <p><%= user.email %></p>
                         </div>
