@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import express from 'express';
 import striptags from 'striptags';
 import he from 'he';
@@ -11,11 +12,31 @@ const router = express.Router();
 
 
 router.get('/', (req, res)=>{
-    res.render('index')
+    try{
+      const meta = {
+        title: "Elevate Your Discourse - Down To Debate",
+        description: "A platform for thoughtful debate, motion generation, and intellectual exchange. Join a community dedicated to civil discourse.",
+        url: `${process.env.URL}`,
+      }
+      res.render('index', {meta})
+    }catch(err){
+      console.log(err)
+      res.status(500).send('Internal Server Error')
+    }
 })
 
 router.get('/join-us', (req, res)=>{
-  res.render('joinus')
+  try {
+      const meta = {
+        title: "Join Us - Down To Debate",
+        description: "Join Down To Debate Today!",
+        url: `${process.env.URL}/join-us`,
+      }
+      res.render('joinus', {meta})
+  } catch (err) {
+      console.log(err)
+      res.status(500).send('Internal Server Error')
+  }
 })
 
 function normalizeIp(ip) {
@@ -27,7 +48,17 @@ function normalizeIp(ip) {
 }
 
 router.get('/about-us', (req, res)=>{
-  res.render('about')
+  try {
+      const meta = {
+        title: "About Us - Down To Debate",
+        description: "Welcome to DownToDebate – your go-to platform for all things debate! Whether you're a seasoned debater looking to sharpen your skills or someone curious about starting your journey in debate, we’re here to support you every step of the way.",
+        url: `${process.env.URL}/about-us`,
+      }
+      res.render('about', {meta})
+  } catch (err) {
+      console.log(err)
+      res.status(500).send('Internal Server Error')
+  }
 })
 
 router.post('/join-us', async (req, res) => {
@@ -70,9 +101,14 @@ router.post('/join-us', async (req, res) => {
 
 router.get('/motion', async (req, res)=>{
     try {
+        const meta = {
+          title: "About Us - Down To Debate",
+          description: "Browse categories to find concise motion briefs and curated resources for each topic area.",
+          url: `${process.env.URL}/motion`,
+        }
         const motions = await Motion.find({});
 
-        res.render('motion', {motions})
+        res.render('motion', {motions, meta})
     } catch (error) {
         console.log(error)
         res.status(500).send('Internal Server Error')
@@ -82,22 +118,16 @@ router.get('/motion', async (req, res)=>{
 router.get('/motions/:slug', async (req, res)=>{
     try {
         const motion = await Motion.findOne({slug: req.params.slug})
-        res.render('category', {motion})
+        const meta = {
+          title: `${motion.title} - Down To Debate`,
+          description: motion.description,
+          url: `${process.env.URL}/motions/${req.params.slug}`,
+        }
+        res.render('category', {motion, meta})
     } catch (error) {
         console.log(error)
         res.status(500).send('Internal Server Error')
     }
-})
-
-router.get('/news', async (req, res)=>{
-  try{
-    const news = await News.find();
-
-    res.render('news', {news})
-  }catch(err){
-    console.log(error)
-    res.status(500).send('Internal Server Error')
-  }
 })
 
 router.get('/motions/view/i/:categorySlug/:motionSlug', async (req, res) => {
@@ -111,12 +141,35 @@ router.get('/motions/view/i/:categorySlug/:motionSlug', async (req, res) => {
     );
 
     if (!motion) return res.status(404).send('Motion not found');
-    res.render('individual_motion', { motion, category });
+
+    const meta = {
+        title: `${category.title} - Down To Debate`,
+        description: category.description,
+        url: `${process.env.URL}/motions/${req.params.slug}`,
+    }
+    res.render('individual_motion', { motion, category, meta });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
+
+router.get('/news', async (req, res)=>{
+  try{
+    const news = await News.find();
+    const meta = {
+        title: `News - Down To Debate`,
+        description: 'News Updates By Down To Debate',
+        url: `${process.env.URL}/news`,
+    }
+    res.render('news', {news, meta})
+  }catch(err){
+    console.log(error)
+    res.status(500).send('Internal Server Error')
+  }
+})
+
+
 
 router.get('/transcript', async (req, res) => {
   try {
@@ -135,7 +188,12 @@ router.get('/transcript', async (req, res) => {
       snippet = snippet.trim() + '...';
       return { ...t, preview: snippet };
     });
-    res.render('debate_transcripts', { transcripts: transcriptsWithPreview });
+    const meta = {
+        title: `Transcripts - Down To Debate`,
+        description: 'Annotated, flowed transcripts for practice and study.',
+        url: `${process.env.URL}/transcript`,
+    }
+    res.render('debate_transcripts', { transcripts: transcriptsWithPreview, meta });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -145,8 +203,12 @@ router.get('/transcript', async (req, res) => {
 router.get('/transcript/:slug', async (req, res) => {
     try {
         const transcript = await Transcript.findOne({slug: req.params.slug})
-
-        res.render('transcript', {transcript})
+        const meta = {
+            title: `${transcript.title} - Down To Debate`,
+            description: `Transcript Of ${transcript.title}`,
+            url: `${process.env.URL}/transcript/${req.params.slug}`,
+        }
+        res.render('transcript', {transcript, meta})
     } catch (error) {
         console.log(error)
         res.status(500).send('Internal Server Error')
@@ -154,7 +216,17 @@ router.get('/transcript/:slug', async (req, res) => {
 })
 
 router.get('/gen', (req, res)=>{
-    res.render('generate')
+    try {
+        const meta = {
+            title: `Generate A Motion  - Down To Debate`,
+            description: `Denerate A Motion`,
+            url: `${process.env.URL}/gen`,
+        }
+        res.render('generate', {meta})
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('Internal Server Error')
+    }
 })
 
 router.post('/generate-motion', async (req, res) => {
@@ -174,7 +246,7 @@ router.post('/generate-motion', async (req, res) => {
     });
 
     const data = await response.json();
-    let text = data?.choices?.[0]?.message?.content || "No motion generated.";
+    let text = data?.choices?.[0]?.message?.content || "Something went wrong, try again later.";
 
     text = text.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
 

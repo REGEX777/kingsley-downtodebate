@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/output.css" />
+  <title>Invite Signup</title>
+</head>
+<body class="min-h-screen bg-black font-sans">
+
+  <div class="h-screen w-full flex items-center justify-center px-4">
+    <div class="w-[25rem] min-h-[25rem] bg-black rounded-xl flex flex-col items-center justify-center gap-10">
+        <div class="flex flex-col items-center justify-center gap-2">
+          <p class="text-3xl font-medium tracking-tight text-white">Invite Signup</p>
+          <p class="text-xs text-gray-400">Invite For <span class="text-white font-medium"><%= invite.invitedUserEmail %></span></p>
+        </div>
+
+      <form action="/invite/signup" method="post" class="w-full flex flex-col items-center justify-center gap-4">
+        
+        <input type="text" placeholder="Set Your Username" aria-label="username" name="username"
+               class="w-[90%] h-12 bg-black text-white placeholder-gray-500 rounded-md border border-gray-800 px-4 text-sm focus:outline-none focus:ring-0 focus:border-gray-600 transition" />
+
+        <input type="password" placeholder="Set Your Password" aria-label="Password" name="password"
+               class="w-[90%] h-12 bg-black text-white placeholder-gray-500 rounded-md border border-gray-800 px-4 text-sm focus:outline-none focus:ring-0 focus:border-gray-600 transition" />
+
+        <input type="text" placeholder="Invite Code" name="invcode" aria-label="Invite Code" readonly value="<%= invite.code %>"
+               class="w-[90%] h-12 bg-black font-semibold placeholder-gray-500 rounded-md border text-gray-600 border-gray-800 px-4 text-sm focus:outline-none focus:ring-0 focus:border-gray-600 transition" />
+
+        <button type="submit" class="w-[90%] cursor-pointer h-10 rounded-md border border-gray-700 text-sm text-white font-medium hover:bg-white/5 active:bg-white/10 transition">
+          Submit
+        </button>
+      </form>
+
+    </div>
+  </div>
+</body>
+</html>

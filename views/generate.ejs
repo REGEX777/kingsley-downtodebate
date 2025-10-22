@@ -218,30 +218,22 @@
     return { ok: true };
   }
 
-  async function postSave(payload) {
-    const resp = await fetch('/save-motion', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    if (!resp.ok) {
-      const txt = await resp.text().catch(()=>resp.statusText);
-      throw new Error(txt || 'Save error');
-    }
-    return resp.json().catch(()=>({ ok: true }));
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
     initToggleGroup('#formats', '.format-btn', 'inputFormat', 'policy');
     initToggleGroup('#difficulties', '.difficulty-btn', 'inputDifficulty', 'intermediate');
     initToggleGroup('#topics', '.topic-btn', 'inputTopic', 'politics');
 
     const form = document.getElementById('generateForm');
+    if (!form) return console.warn('generateForm not found');
+
     const results = document.getElementById('resultsSection');
     const loading = document.getElementById('loadingSection');
     const motionTextEl = document.getElementById('motionText');
     const forList = document.getElementById('forList');
     const againstList = document.getElementById('againstList');
+    const regenerateBtn = document.getElementById('regenerateBtn');
+    const generateBtn = document.getElementById('generateBtn');
+    const saveBtn = document.getElementById('saveMotionBtn');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -249,48 +241,53 @@
       const difficulty = document.getElementById('inputDifficulty').value;
       const topic = document.getElementById('inputTopic').value;
 
-      results.classList.add('hidden');
-      loading.classList.remove('hidden');
-      motionTextEl.textContent = '';
-      forList.innerHTML = '';
-      againstList.innerHTML = '';
+      if (results) results.classList.add('hidden');
+      if (loading) loading.classList.remove('hidden');
+      if (motionTextEl) motionTextEl.textContent = '';
+
+      if (forList) forList.innerHTML = '';
+      if (againstList) againstList.innerHTML = '';
 
       try {
+        // this is where the request is sent
         const text = await fetchGenerate(format, difficulty, topic);
-        loading.classList.add('hidden');
-        results.classList.remove('hidden');
-        await typeOut(String(text || ''), motionTextEl, 8);
-
+        if (loading) loading.classList.add('hidden');
+        if (results) results.classList.remove('hidden');
+        if (motionTextEl) await typeOut(String(text || ''), motionTextEl, 8);
       } catch (err) {
-        loading.classList.add('hidden');
-        results.classList.remove('hidden');
-        motionTextEl.textContent = 'Error: ' + (err.message || 'Failed to generate');
+        if (loading) loading.classList.add('hidden');
+        if (results) results.classList.remove('hidden');
+        if (motionTextEl) motionTextEl.textContent = 'Error: ' + (err.message || 'Failed to generate');
+        console.error('generate error', err);
       }
     });
 
-    document.getElementById('regenerateBtn').addEventListener('click', () => {
-      document.getElementById('generateBtn').click();
-    });
+    if (regenerateBtn && generateBtn) {
+      regenerateBtn.addEventListener('click', () => generateBtn.click());
+    }
 
-    document.getElementById('saveMotionBtn').addEventListener('click', async () => {
-      const format = document.getElementById('inputFormat').value;
-      const difficulty = document.getElementById('inputDifficulty').value;
-      const topic = document.getElementById('inputTopic').value;
-      const text = document.getElementById('motionText').textContent || '';
-      if (!text.trim()) return alert('Generate a motion first');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', async () => {
+        const format = document.getElementById('inputFormat').value;
+        const difficulty = document.getElementById('inputDifficulty').value;
+        const topic = document.getElementById('inputTopic').value;
+        const text = (document.getElementById('motionText') && document.getElementById('motionText').textContent) || '';
+        if (!text.trim()) return alert('Generate a motion first');
 
-      const payload = { title: text.trim(), htmlBody: `<p>${escapeHtml(text.trim())}</p>`, format, difficulty, topic };
-      try {
-        const resp = await postSave(payload);
-        if (resp && resp.ok) {
-          alert('Motion saved');
-        } else {
-          alert('Save failed');
+        const payload = { title: text.trim(), htmlBody: `<p>${escapeHtml(text.trim())}</p>`, format, difficulty, topic };
+        try {
+          const resp = await postSave(payload);
+          if (resp && resp.ok) {
+            alert('Motion saved');
+          } else {
+            alert('Save failed');
+          }
+        } catch (err) {
+          alert('Save failed: ' + (err.message || ''));
+          console.error('save error', err);
         }
-      } catch (err) {
-        alert('Save failed: ' + (err.message || ''));
-      }
-    });
+      });
+    }
 
     function escapeHtml(str) {
       return String(str).replace(/[&<>"']/g, function (m) {
@@ -300,3 +297,4 @@
   });
 })();
 </script>
+

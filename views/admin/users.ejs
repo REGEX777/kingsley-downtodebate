@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard - newss</title>
+    <link rel="stylesheet" href="/css/output.css">
+    <script src="https://kit.fontawesome.com/82eb69e53c.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-black text-white font-sans antialiased">
+
+    <%- include('../partials/alerts') -%>
+
+    <div class="min-h-screen flex flex-col md:flex-row">
+
+        <%- include('_sidebar') -%>
+        <main class="flex-1 p-8 space-y-8 flex flex-col items-center justify-start gap-5">
+            <div
+                class="min-h-[10rem] w-full bg-[#101828] rounded-lg text-white flex flex-col items-start justify-center px-5 py-5">
+                <form action="/admin/users/invite" method="post"
+                    class="flex flex-col items-start justify-center w-full gap-3">
+                    <p class="text-2xl font-medium">Invite New User</p>
+                    <input type="text" name="email"
+                        class="h-10 w-full bg-black rounded-lg px-2 text-white placeholder:text-gray-700"
+                        placeholder="Enter Invite Email">
+                    <button type="submit" class="h-10 px-10 bg-blue-700 cursor-pointer rounded-lg">Submit</button>
+                </form>
+            </div>
+            <div class="flex items-start justify-start flex-col w-full gap-5">
+                <p class="text-xl font-medium">Invites</p>
+                <div class="w-full grid grid-cols-4 gap-5">
+                    <% invites.forEach((invite, i) => { %>
+                    <div class="w-full bg-[#101828] rounded-lg p-5 flex flex-col gap-4 relative">
+                        <div
+                            class="py-3 px-5 bg-black rounded-lg text-white font-mono flex flex-row items-center justify-between">
+                            <p><%= invite.invitedUserEmail %></p>
+
+                            <!-- tooltip -->
+                            <div id="tooltip-default-<%= i %>" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip">
+                                Copy Invite
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+
+                            <!-- copy icon -->
+                            <p data-tooltip-target="tooltip-default-<%= i %>"
+                                class="text-gray-400 hover:text-white cursor-pointer transition-colors"
+                                onclick="copyInviteCode('<%= url %>invite/<%= invite.code %>', <%= i %>)">
+                                <i class="fa-solid fa-copy"></i>
+                            </p>
+                        </div>
+
+                        <div class="flex items-center justify-between gap-4">
+                            <% if(!invite.used){ %> 
+                                <p class="cursor-pointer text-xs text-gray-300">
+                                    Expiry On <%= new Date(invite.expires).toDateString().slice(4) %>
+                                </p>
+                            <% }else if(invite.used){ %> 
+                                <p class="cursor-pointer text-xs text-gray-300">
+                                    Invite Used
+                                </p>
+                            <% } %>
+                            <form action="/admin/users/invite/delete" method="post"
+                                onsubmit="return confirm('Are you sure you want to delete this invite?');">
+                                <input type="hidden" name="id" value="<%= invite._id %>">
+                                <button type="submit"
+                                    class="bg-red-500 border-2 border-red-800 cursor-pointer font-mono rounded-lg px-2">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                    <% }) %>
+
+                    <script>
+                        function copyInviteCode(code, index) {
+                            navigator.clipboard.writeText(code)
+                                .then(() => {
+                                    const tooltip = document.getElementById(`tooltip-default-${index}`);
+                                    const msg = document.getElementById(`copied-msg-${index}`);
+
+                                    // briefly change tooltip text
+                                    const originalText = tooltip.textContent.trim();
+                                    tooltip.textContent = 'Copied!';
+                                    msg.classList.remove('hidden');
+
+                                    setTimeout(() => {
+                                        tooltip.textContent = originalText;
+                                        msg.classList.add('hidden');
+                                    }, 1500);
+                                })
+                                .catch(err => {
+                                    console.error('Failed to copy:', err);
+                                });
+                        }
+                    </script>
+
+                </div>
+            </div>
+            <div class="flex items-start justify-start flex-col w-full gap-5">
+                <p class="text-xl font-medium">Users</p>
+                <div class="w-full grid grid-cols-4 gap-5">
+                    <% users.forEach((user) => { %>
+
+                    <div class="w-full bg-[#101828] rounded-lg p-5 flex flex-col gap-4">
+                        <div class="py-3 px-5 bg-black rounded-lg text-white font-mono">
+                            <p><%= user.email %></p>
+                        </div>
+                        <div class="flex items-center justify-end gap-4">
+                            <p class="cursor-pointer"><i class="fa-solid fa-ellipsis-vertical"></i></p>
+                            <form action="/admin/users/delete" method="post"
+                                onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                <input type="hidden" name="id" value="<%= user._id %>">
+                                <button type="submit"
+                                    class="bg-red-500 border-2 border-red-800 cursor-pointer font-mono rounded-lg px-2">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <% }) %>
+
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+</html>

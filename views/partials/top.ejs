@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Down to Debate — Motion Categories</title>
+  <title><%= meta.title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="<%= meta.description %>">
+  <link rel="canonical" href="<%= meta.url %>" />
+  <meta property="og:title" content="<%= meta.title %>" />
+  <meta property="og:url" content="<%= meta.url %>"" />
+  <meta property="og:description" content="<%= meta.description %>" />
   <link rel="stylesheet" href="/css/output.css">
 </head>
 <body class="font-sans bg-white text-gray-800">
@@ -13,20 +19,25 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <div class="flex items-center">
-          <div class="flex-shrink-0 flex items-center">
+          <a href="/" class="flex-shrink-0 flex items-center">
             <img class="h-10" src="/images/logo.png" alt="" srcset="">
-          </div>
-          <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
-            <a href="/" class="border-primary-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-base font-medium">Home</a>
-            <a href="/motion" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-base font-medium">Motion Analysis</a>
-            <a href="/transcript" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-base font-medium">Debate Transcripts</a>
-            <a href="/gen" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-base font-medium">Motion Generator</a>
-            <a href="/news" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-base font-medium">News Update</a>
-            <a href="/about" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-base font-medium">About Us</a>
+          </a>
+          <div class="hidden sm:ml-6 sm:flex sm:space-x-4">  
+            <a href="/motion" class="<%= currentPath.startsWith('/motion') ? 'border-primary-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' %> inline-flex items-center px-1 pt-1 border-b-2 text-base font-medium">Motion Analysis</a>
+            
+            <a href="/transcript" class="<%= currentPath.startsWith('/transcript') ? 'border-primary-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' %> inline-flex items-center px-1 pt-1 border-b-2 text-base font-medium">Debate Transcripts</a>
+            
+            <a href="/gen" class="<%= currentPath.startsWith('/gen') ? 'border-primary-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' %> inline-flex items-center px-1 pt-1 border-b-2 text-base font-medium">Motion Generator</a>
+            
+            <a href="/news" class="<%= currentPath.startsWith('/news') ? 'border-primary-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' %> inline-flex items-center px-1 pt-1 border-b-2 text-base font-medium">News Update</a>
+            
+            <a href="/about-us" class="<%= currentPath.startsWith('/about-us') ? 'border-primary-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' %> inline-flex items-center px-1 pt-1 border-b-2 text-base font-medium">About Us</a>
           </div>
         </div>
         <div class="hidden sm:ml-6 sm:flex sm:items-center">
-          <button class="bg-primary-500 hover:bg-primary-600 cursor-pointer text-white px-4 py-2 rounded-md text-base font-medium transition duration-150 ease-in-out">Join Us</button>
+          <form action="/join-us" method="get">
+            <button type="submit" class="bg-primary-500 hover:bg-primary-600 cursor-pointer text-white px-4 py-2 rounded-md text-base font-medium transition duration-150 ease-in-out">Join Us</button>
+          </form>
         </div>
         <div class="-mr-2 flex items-center sm:hidden">
           <button id="mobileMenuButton" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500" aria-controls="mobile-menu" aria-expanded="false">
@@ -45,11 +56,19 @@
     <!-- Mobile menu -->
     <div class="sm:hidden hidden" id="mobile-menu">
       <div class="pt-2 pb-3 space-y-1">
-        <a href="/" class="bg-primary-50 border-primary-500 text-primary-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
-        <a href="/transcripts" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Transcripts</a>
-        <a href="/generator" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Motion Generator</a>
-        <a href="/join" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Join Us</a>
-        <a href="/admin" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Admin Panel</a>
+        <a href="/" class="<%= currentPath === '/' ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' %> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+
+        <a href="/motion" class="<%= currentPath.startsWith('/motion') ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' %> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Motion Analysis</a>
+
+        <a href="/transcript" class="<%= currentPath.startsWith('/transcript') ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' %> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Debate Transcripts</a>
+
+        <a href="/gen" class="<%= currentPath.startsWith('/gen') ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' %> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Motion Generator</a>
+
+        <a href="/news" class="<%= currentPath.startsWith('/news') ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' %> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">News Updates</a>
+
+        <a href="/about-us" class="<%= currentPath.startsWith('/about-us') ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' %> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About Us</a>
+
+        <a href="/join-us" class="<%= currentPath.startsWith('/join-us') ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' %> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Join Us</a>
       </div>
     </div>
   </nav>

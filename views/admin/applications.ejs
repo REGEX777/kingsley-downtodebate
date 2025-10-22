@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard - newss</title>
+    <link rel="stylesheet" href="/css/output.css">
+    <script src="https://kit.fontawesome.com/82eb69e53c.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-black text-white font-sans antialiased">
+
+    <%- include('../partials/alerts') -%>
+
+    <div class="min-h-screen flex flex-col md:flex-row">
+
+        <%- include('_sidebar') -%>
+        <main class="flex-1 p-8 flex flex-col items-center justify-start gap-5">
+            <div class="flex items-start justify-start flex-col w-full gap-5">
+                <p class="text-xl font-medium">Applications</p>
+                <div class="w-full grid grid-cols-4 gap-5">
+                    <% applications.forEach(application => { %> 
+                    <div class="w-full bg-[#101828] rounded-lg p-5 flex flex-col gap-4 relative">
+                        <div
+                            class="py-3 px-5 bg-black rounded-lg text-white font-mono flex flex-row items-center justify-between">
+                            <p><%= application.email %></p>
+                            <p><i class="fa-solid fa-copy"></i></p>
+                        </div>
+                        <div
+                            class="py-3 px-5 bg-black rounded-lg text-white font-mono flex flex-row items-center justify-between">
+                            <p><%= application.message %></p>
+                        </div>
+                    </div>
+                    <% }) %>
+
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
