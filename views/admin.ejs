@@ -12,21 +12,22 @@
 
     <!-- Sidebar -->
    <%- include('admin/_sidebar') -%>
+   <%- include('partials/alerts') -%>
 
 
     <!-- Main Content -->
     <main class="flex-1 p-8 space-y-8">
-      <section id="motions" class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+      <section id="motions" class="bg-[#101828] p-6 rounded-2xl shadow-lg">
         <h2 class="text-xl font-semibold mb-4">Motions</h2>
         <p>Manage, create and review motions.</p>
         <div class="mt-4 flex gap-4">
         <form action="/admin/motions" method="get">
-          <button class="px-4 py-2 bg-cyan-600 rounded-lg hover:bg-cyan-500 transition cursor-pointer">View All</button>
+            <button class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700 transition cursor-pointer">View All</button>
         </form>
         </div>
       </section>
 
-      <section id="transcripts" class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+      <section id="transcripts" class="bg-[#101828] p-6 rounded-2xl shadow-lg">
         <h2 class="text-xl font-semibold mb-4">Transcripts</h2>
         <p>View and manage generated transcripts.</p>
         <div class="mt-4 flex gap-4">
@@ -36,7 +37,7 @@
         </div>
       </section>
 
-      <section id="users" class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+      <section id="users" class="bg-[#101828] p-6 rounded-2xl shadow-lg">
         <h2 class="text-xl font-semibold mb-4">Users</h2>
         <p>Manage user roles and activity.</p>
         <div class="mt-4 flex gap-4">
@@ -46,7 +47,7 @@
         </div>
       </section>
 
-      <section id="applications" class="bg-gray-800 p-6 rounded-2xl shadow-lg">
+      <section id="applications" class="bg-[#101828] p-6 rounded-2xl shadow-lg">
         <h2 class="text-xl font-semibold mb-4">Applications</h2>
         <p>Manage applications/join requests.</p>
         <div class="mt-4 flex gap-4">

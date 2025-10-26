@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard - newss</title>
+    <link rel="stylesheet" href="/css/output.css">
+    <script src="https://kit.fontawesome.com/82eb69e53c.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-black text-white font-sans antialiased">
+
+    <%- include('../partials/alerts') -%>
+
+    <div class="min-h-screen flex flex-col md:flex-row">
+
+        <%- include('_sidebar') -%>
+        <main class="flex-1 p-8 flex flex-col items-center justify-start gap-5">
+            <div class="w-full py-5 min-h-[10rem] bg-[#101828] rounded-lg flex flex-col items-start justify-center px-5">
+                <form action="/admin/debate/settings/debateFormat" method="post" class="w-full flex flex-col items-start justify-center gap-5">
+                <p class="text-xl font-medium">Add A Debate Format</p>
+                <input type="text" name="name"
+                   class="w-full p-3 rounded-lg bg-black focus:outline-none"
+                   placeholder="Format Name" required>
+                <button class="h-10 px-5 bg-blue-500 cursor-pointer rounded-lg">
+                    Submit
+                </button>
+                </form>
+            </div>
+            <div class="w-full py-5 min-h-[10rem] bg-[#101828] rounded-lg flex flex-col items-start justify-center px-5 gap-5">
+                <p class="text-xl font-medium">Existing Formats</p>
+                <% if(formats.length === 0){ %> 
+                    <p class="text-base font-medium text-gray-600 w-full">No formats added yet, please use the form above to add one.</p>
+                <% } %>
+                <div class="w-full grid grid-cols-4 gap-5">
+                    <% formats.forEach(f =>{ %> 
+                        <div class="w-full py-5 min-h-10 bg-[#000000] rounded-lg flex items-center justify-between px-5">
+                            <p class="text-lg font-medium"><%= f.name %></p>
+                            <form action="/admin/debate/formats/delete" method="post">
+                                <input type="text" value="<%= f._id %>" name="id" hidden>
+                                <button type="submit" onclick="confirm(`Are You Sure?`)" class=""><i class="fa-solid fa-trash p-3 bg-red-500 hover:bg-red-700 transform cursor-pointer transition-all duration-75 rounded-lg"></i></button>
+                            </form>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+            <div class="w-full py-5 min-h-[10rem] bg-[#101828] rounded-lg flex flex-col items-start justify-center px-5">
+                <form action="/admin/debate/settings/topicArea" method="post" class="w-full flex flex-col items-start justify-center gap-5">
+                    <p class="text-xl font-medium">Add A Topic Area</p>
+                    <input type="text" name="name"
+                    class="w-full p-3 rounded-lg bg-black focus:outline-none"
+                    placeholder="Format Name" required>
+                    <button class="h-10 px-5 bg-blue-500 cursor-pointer rounded-lg">
+                        Submit
+                    </button>
+                </form>
+            </div>
+            <div class="w-full py-5 min-h-[10rem] bg-[#101828] rounded-lg flex flex-col items-start justify-center px-5 gap-5">
+                <p class="text-xl font-medium">Existing Topic Areas</p>
+                <% if(topics.length === 0){ %> 
+                    <p class="text-base font-medium text-gray-600 w-full">No topics added yet, please use the form above to add one.</p>
+                <% } %>
+                <div class="w-full grid grid-cols-4 gap-5">
+                    <% topics.forEach(f =>{ %> 
+                        <div class="w-full py-5 min-h-10 bg-[#000000] rounded-lg flex items-center justify-between px-5">
+                            <p class="text-lg font-medium"><%= f.name %></p>
+                            <form action="/admin/debate/topics/delete" method="post">
+                                <input type="text" value="<%= f._id %>" name="id" hidden>
+                                <button type="submit" onclick="confirm(`Are You Sure?`)" class=""><i class="fa-solid fa-trash p-3 bg-red-500 hover:bg-red-700 transform cursor-pointer transition-all duration-75 rounded-lg"></i></button>
+                            </form>
+                        </div>
+                    <% }) %>
+                </div>
+
+            </div>
+        </main>
+    </div>
+    </body>
+</html>

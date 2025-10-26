@@ -9,6 +9,9 @@ import Transcript from '../models/Transcriptions.js';
 import News from '../models/News.js';
 import Application from '../models/Applications.js';
 
+import DebateFormat from '../models/DebateFormats.js';
+import TopicArea from '../models/TopicArea.js';
+
 const router = express.Router();
 const ai = new GoogleGenAI({apiKey: process.env.GEMINI_KEY});
 
@@ -166,7 +169,7 @@ router.get('/news', async (req, res)=>{
     }
     res.render('news', {news, meta})
   }catch(err){
-    console.log(error)
+    console.log(err)
     res.status(500).send('Internal Server Error')
   }
 })
@@ -217,14 +220,18 @@ router.get('/transcript/:slug', async (req, res) => {
     }
 })
 
-router.get('/gen', (req, res)=>{
+router.get('/gen', async (req, res)=>{
     try {
         const meta = {
             title: `Generate A Motion  - Down To Debate`,
             description: `Denerate A Motion`,
             url: `${process.env.URL}/gen`,
         }
-        res.render('generate', {meta})
+        
+        const formats = await DebateFormat.find({}).lean();
+        const topics = await TopicArea.find({}).lean();
+
+        res.render('generate', {meta, formats, topics})
     } catch (error) {
         console.log(error)
         res.status(500).send('Internal Server Error')

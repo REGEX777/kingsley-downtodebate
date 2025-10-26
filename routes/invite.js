@@ -1,6 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcrypt'
-
+import { nanoid } from 'nanoid';
 import Invite from '../models/Invite.js';
 import User from '../models/User.js';
 import { isLoggedOut } from '../middleware/isLoggedOut.js';
@@ -56,6 +56,7 @@ router.post('/signup', async (req, res)=>{
         }
 
         const hash = await bcrypt.hash(req.body.password, 10)
+        const verificationToken = nanoid();
 
         const user = new User({
             email: invite.invitedUserEmail,
@@ -63,6 +64,7 @@ router.post('/signup', async (req, res)=>{
             username: req.body.username,
             password: hash,
             signupIp: req.ip,
+            verificationToken
         })
 
         const availableUsers = await User.find({});

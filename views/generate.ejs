@@ -28,11 +28,9 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-3">Debate Format</label>
             <div id="formats" class="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <button type="button" data-value="policy" class="format-btn py-3 px-4 border rounded-lg text-sm font-medium">Policy</button>
-              <button type="button" data-value="public-forum" class="format-btn py-3 px-4 border rounded-lg text-sm font-medium">Public Forum</button>
-              <button type="button" data-value="parliamentary" class="format-btn py-3 px-4 border rounded-lg text-sm font-medium">Parliamentary</button>
-              <button type="button" data-value="lincoln-douglas" class="format-btn py-3 px-4 border rounded-lg text-sm font-medium">Lincoln-Douglas</button>
-              <button type="button" data-value="world-schools" class="format-btn py-3 px-4 border rounded-lg text-sm font-medium">World Schools</button>
+              <% formats.forEach(f =>{ %> 
+                <button type="button" data-value="<%= f.slug %>" class="format-btn py-3 px-4 border rounded-lg text-sm font-medium"><%= f.name %></button>
+              <% }) %>
             </div>
           </div>
 
@@ -48,12 +46,9 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-3">Topic Area</label>
             <div id="topics" class="grid grid-cols-2 md:grid-cols-3 gap-3">
-              <button type="button" data-value="politics" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium">Politics</button>
-              <button type="button" data-value="ethics" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium">Ethics</button>
-              <button type="button" data-value="economics" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium">Economics</button>
-              <button type="button" data-value="technology" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium">Technology</button>
-              <button type="button" data-value="environment" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium">Environment</button>
-              <button type="button" data-value="education" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium">Education</button>
+              <% topics.forEach(f =>{ %> 
+                <button type="button" data-value="<%= f.slug %>" class="topic-btn py-3 px-4 border rounded-lg text-sm font-medium"><%= f.name %></button>
+              <% }) %>
             </div>
           </div>
 

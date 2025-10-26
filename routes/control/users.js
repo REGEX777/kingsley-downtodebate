@@ -209,6 +209,10 @@ adminInvite()
 
 router.get('/', async (req, res) => {
     try {
+        if (!req.user.superadmin) {
+            req.flash('error', 'Not enough permission')
+            return res.redirect('/admin')
+        }
         const invites = await Invite.find();
         const users = await User.find();
 
@@ -222,6 +226,49 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.post('/promote-superadmin', async (req, res)=>{
+  try {
+    if(!req.user.superadmin){
+      req.flash('error', 'Not enough permission')
+      return res.redirect('/admin')
+    }
+
+    const promotionUser = await User.findOne({_id: req.body.id})
+    promotionUser.superadmin = true
+
+    await promotionUser.save()
+    req.flash('success', 'Successfully Promoted User')
+    res.redirect('/admin/users')
+  } catch (error) {
+    console.log(error)
+    res.status(500).send('Internal Server Error')
+  }
+})
+
+router.post('/demote-superadmin', async (req, res)=>{
+  try {
+    if(!req.user.superadmin){
+      req.flash('error', 'Not enough permission')
+      return res.redirect('/admin')
+    }
+    console.log(req.body)
+    const demotionuser = await User.findOne({_id: req.body.id})
+    if(!demotionuser.superadmin){
+      req.flash('error', 'User is not super admin.')
+      return res.redirect('/admin/users')
+    }
+
+    demotionuser.superadmin = false
+
+    await demotionuser.save()
+    req.flash('success', 'Successfully Demoted User')
+    res.redirect('/admin/users')
+  } catch (error) {
+    console.log(error)
+    res.status(500).send('Internal Server Error')
+  }
+})
+
 router.post('/delete', async (req, res) => {
     try {
         const id = req.body.id;
@@ -232,7 +279,7 @@ router.post('/delete', async (req, res) => {
 
         if (!req.user.superadmin) {
             req.flash('error', 'Not enough permission')
-            return res.redirect('/admin/users')
+            return res.redirect('/admin')
         }
 
         const deletedUser = await User.findOneAndDelete({
@@ -258,6 +305,11 @@ router.post('/invite', async (req, res) => {
         if (!email) {
             req.flash('error', 'Please enter an email for invite.')
             return res.redirect('/admin/users')
+        }
+        
+        if (!req.user.superadmin) {
+            req.flash('error', 'Not enough permission')
+            return res.redirect('/admin')
         }
 
         const invite = await Invite.findOne({
@@ -383,6 +435,10 @@ router.post('/invite', async (req, res) => {
 
 router.post('/invite/delete', async (req, res) => {
     try {
+        if(!req.user.superadmin){
+          req.flash('error', 'Not Enough Permission')
+          return res.redirect('/admin')
+        }
         const deletedInvite = await Invite.findByIdAndDelete(req.body.id)
         if (!deletedInvite) {
             req.flash('error', 'Invite Not Found')

@@ -7,7 +7,11 @@ const userSchema = new mongoose.Schema({
     superadmin: Boolean,
     password: String,
     signupIp: String,
-    accessLogs: [String]
+    accessLogs: [String],
+
+    resetToken: String,
+    tokenExpiration: Date,
+    lastResetRequest: Date
 })
 
 const User = mongoose.model('User', userSchema)
