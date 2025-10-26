@@ -21,6 +21,7 @@ app.set('trust proxy', true);
 app.use(express.static('public'))
 app.use(express.json());
 app.use(express.urlencoded({
+    limit: '50mb',
     extended: true
 }))
 app.use(session({
