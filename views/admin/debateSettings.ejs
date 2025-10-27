@@ -37,9 +37,9 @@
                     <% formats.forEach(f =>{ %> 
                         <div class="w-full py-5 min-h-10 bg-[#000000] rounded-lg flex items-center justify-between px-5">
                             <p class="text-lg font-medium"><%= f.name %></p>
-                            <form action="/admin/debate/formats/delete" method="post">
+                            <form action="/admin/debate/formats/delete" method="post" onsubmit="return confirm(`Are you sure?`)">
                                 <input type="text" value="<%= f._id %>" name="id" hidden>
-                                <button type="submit" onclick="confirm(`Are You Sure?`)" class=""><i class="fa-solid fa-trash p-3 bg-red-500 hover:bg-red-700 transform cursor-pointer transition-all duration-75 rounded-lg"></i></button>
+                                <button type="submit" class=""><i class="fa-solid fa-trash p-3 bg-red-500 hover:bg-red-700 transform cursor-pointer transition-all duration-75 rounded-lg"></i></button>
                             </form>
                         </div>
                     <% }) %>
