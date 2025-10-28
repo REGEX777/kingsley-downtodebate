@@ -8,6 +8,7 @@ import passportConfig from './config/passport.js'
 
 import { isLoggedIn } from './middleware/isLoggedIn.js';
 import { isAdmin } from './middleware/isAdmin.js';
+import diagnostics from './middleware/diagnostics-middleware.js';
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
@@ -16,6 +17,7 @@ mongoose.connect(process.env.MONGO_URI)
     .catch(err => console.log(err));
 
 const app = express()
+app.use(diagnostics);
 app.set('view engine', 'ejs')
 app.set('trust proxy', true);
 app.use(express.static('public'))
