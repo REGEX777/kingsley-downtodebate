@@ -9,7 +9,7 @@ const transcriptionSchema = new mongoose.Schema({
         unique: true,
     },
     original: String,
-    body: String
+    body: String,
 })
 transcriptionSchema.pre('validate', function(next) {
   if (this.title) {

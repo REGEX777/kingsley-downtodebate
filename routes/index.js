@@ -11,6 +11,7 @@ import Application from '../models/Applications.js';
 
 import DebateFormat from '../models/DebateFormats.js';
 import TopicArea from '../models/TopicArea.js';
+import About from '../models/About.js';
 
 const router = express.Router();
 const ai = new GoogleGenAI({apiKey: process.env.GEMINI_KEY});
@@ -52,14 +53,16 @@ function normalizeIp(ip) {
   return ip;
 }
 
-router.get('/about-us', (req, res)=>{
+router.get('/about-us', async (req, res)=>{
   try {
       const meta = {
         title: "About Us - Down To Debate",
         description: "Welcome to DownToDebate – your go-to platform for all things debate! Whether you're a seasoned debater looking to sharpen your skills or someone curious about starting your journey in debate, we’re here to support you every step of the way.",
         url: `${process.env.URL}/about-us`,
       }
-      res.render('about', {meta})
+      const about = await About.findOne({}).lean()
+      const html = about.about
+      res.render('about', {meta, html})
   } catch (err) {
       console.log(err)
       res.status(500).send('Internal Server Error')

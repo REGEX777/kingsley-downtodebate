@@ -134,7 +134,7 @@ router.post('/new', async (req, res)=>{
         const transcript = new Transcript({
             title: title,
             original: body,
-            body: html
+            body: html,
         })
 
         await transcript.save()

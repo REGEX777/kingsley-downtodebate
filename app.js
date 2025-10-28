@@ -35,11 +35,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(flash());
-app.use((req, res, next) => {
+
+
+
+app.use(async (req, res, next) => {
   res.locals.url = process.env.URL
   res.locals.success = req.flash('success');
   res.locals.currentPath = req.path;
   res.locals.error = req.flash('error');
+  res.locals.siteConfig = (await Icon.findOne({}).lean()) || { blogIcon: '✱' };
     if (req.isAuthenticated()) { 
       res.locals.user = req.user; 
     } else {
@@ -58,6 +62,7 @@ import login from './routes/login.js'
 import logout from './routes/logout.js'
 import passwordreset from './routes/password-reset.js'
 import { isLoggedOut } from './middleware/isLoggedOut.js';
+import Icon from './models/Icon.js';
 
 // routes
 app.use('/', index)

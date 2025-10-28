@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard - About Us</title>
+  <link rel="stylesheet" href="/css/output.css">
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/82eb69e53c.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-black text-white font-sans antialiased">
+  <%- include('../partials/alerts') -%>
+
+  <div class="min-h-screen flex flex-col md:flex-row">
+    <%- include('_sidebar') -%>
+
+    <main class="flex-1 p-8 flex flex-col items-center justify-start gap-5">
+      <div class="flex flex-col items-start justify-center w-full gap-5">
+
+        <form id="aboutForm" action="/admin/about" method="post" class="space-y-6 w-full">
+          <section class="bg-[#101828] p-6 rounded-2xl shadow-lg w-full">
+            <div class="space-y-4 w-full">
+              <div>
+                <label class="block text-xl font-medium mb-2">About Us</label>
+                <div id="editor" class="bg-white text-black"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Hidden inputs for Delta + HTML -->
+          <input type="hidden" name="body" id="hiddenBody">
+          <input type="hidden" name="original" id="hiddenOriginal">
+
+          <div class="flex items-center gap-3">
+            <button type="submit" class="px-6 py-3 bg-green-600 rounded-lg hover:bg-green-500 transition font-medium">
+              Save Changes
+            </button>
+            <a href="/admin/motion" class="px-6 py-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition font-medium">
+              Cancel
+            </a>
+          </div>
+        </form>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+  <script>
+    // Safely pass existing data from backend
+    const aboutData = <%- JSON.stringify(about || {}) %>;
+    const quill = new Quill('#editor', {
+      modules: {
+        toolbar: [
+          [{ size: ['small', false, 'large', 'huge'] }],
+          ['bold', 'italic', 'underline'],
+          ['link', 'blockquote', 'code-block', 'image'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ header: [1, 2, 3, false] }]
+        ]
+      },
+      theme: 'snow'
+    });
+
+    // Try to load existing delta or fallback to HTML
+    if (aboutData.original) {
+      try {
+        const parsed = JSON.parse(aboutData.original);
+        if (Array.isArray(parsed)) {
+          quill.setContents({ ops: parsed });
+        } else if (parsed.ops) {
+          quill.setContents(parsed);
+        }
+      } catch (err) {
+        console.warn('Invalid delta, falling back to HTML');
+        if (aboutData.about) quill.clipboard.dangerouslyPasteHTML(aboutData.about);
+      }
+    } else if (aboutData.about) {
+      quill.clipboard.dangerouslyPasteHTML(aboutData.about);
+    }
+
+    // On submit, capture both the delta and HTML version
+    const form = document.getElementById('aboutForm');
+    form.addEventListener('submit', (e) => {
+      document.getElementById('hiddenOriginal').value = JSON.stringify(quill.getContents().ops);
+      document.getElementById('hiddenBody').value = quill.root.innerHTML;
+    });
+  </script>
+</body>
+</html>
