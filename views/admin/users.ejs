@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin Dashboard - newss</title>
+    <title>Users - Admin Dashboard</title>
     <link rel="stylesheet" href="/css/output.css">
     <script src="https://kit.fontawesome.com/82eb69e53c.js" crossorigin="anonymous"></script>
 </head>
@@ -30,7 +30,7 @@
             </div>
             <div class="flex items-start justify-start flex-col w-full gap-5">
                 <p class="text-xl font-medium">Invites</p>
-                <div class="w-full grid grid-cols-4 gap-5">
+                <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     <% invites.forEach((invite, i) => { %>
                     <div class="w-full bg-[#101828] rounded-lg p-5 flex flex-col gap-4 relative">
                         <div
@@ -102,7 +102,7 @@
             </div>
             <div class="flex items-start justify-start flex-col w-full gap-5">
                 <p class="text-xl font-medium">Users</p>
-                <div class="w-full grid grid-cols-4 gap-5">
+                <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     <% users.forEach((u) => { %>
 
                     <div class="w-full bg-[#101828] rounded-lg p-5 flex flex-col gap-4">

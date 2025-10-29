@@ -10,6 +10,7 @@ import users from './control/users.js'
 import applications from './control/applications.js'
 import debate from './control/debate.js'
 import about from './control/about.js'
+import graphics from './control/graphics.js'
 
 const router = express.Router();
 
@@ -53,6 +54,7 @@ router.use('/users', users)
 router.use('/applications', applications)
 router.use('/debate', debate)
 router.use('/about', about)
+router.use('/graphics', graphics)
 
 
 export default router;

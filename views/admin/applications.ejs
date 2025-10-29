@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin Dashboard - newss</title>
+    <title>Applications - Admin Dashboard</title>
     <link rel="stylesheet" href="/css/output.css">
     <script src="https://kit.fontawesome.com/82eb69e53c.js" crossorigin="anonymous"></script>
 </head>
@@ -26,7 +26,7 @@
                         <a href="/admin/applications/archive" class="py-2 px-4 rounded-lg bg-gray-500">Archives</a>
                     <% } %>
                 </div>
-                <div class="w-full grid grid-cols-4 gap-5">
+                <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     <% applications.forEach(application => { %> 
                         <div class="w-full bg-[#101828] rounded-lg p-5 flex flex-col gap-4 relative">
                             <div
@@ -54,7 +54,7 @@
                                 <% }else{ %> 
                                     <form action="/admin/applications/archive" method="post" onsubmit="return confirm(`Are you sure you want to archive this application?`)">
                                         <input type="text" name="id" hidden value="<%= application._id %>">
-                                        <button type="submit" class=""><i class="fa-solid fa-box-archive p-3 bg-blue-500 hover:bg-blue-700 transform cursor-pointer transition-all duration-75 rounded-lg"></i></button>
+                                        <button type="submit" class="p-3 bg-blue-500 hover:bg-blue-700 transform cursor-pointer transition-all duration-75 rounded-lg"><i class="fa-solid fa-box-archive"></i></button>
                                     </form>
                                 <% } %>
                             </div>

@@ -8,6 +8,7 @@ import passportConfig from './config/passport.js'
 
 import { isLoggedIn } from './middleware/isLoggedIn.js';
 import { isAdmin } from './middleware/isAdmin.js';
+import Graphic from './models/Graphics.js';
 import diagnostics from './middleware/diagnostics-middleware.js';
 
 mongoose.connect(process.env.MONGO_URI)
@@ -38,20 +39,24 @@ app.use(passport.session());
 
 app.use(flash());
 
-
-
 app.use(async (req, res, next) => {
-  res.locals.url = process.env.URL
-  res.locals.success = req.flash('success');
-  res.locals.currentPath = req.path;
-  res.locals.error = req.flash('error');
-  res.locals.siteConfig = (await Icon.findOne({}).lean()) || { blogIcon: '✱' };
-    if (req.isAuthenticated()) { 
-      res.locals.user = req.user; 
-    } else {
-      res.locals.user = null; 
-    }
-  next();
+  try {
+    const banner = await Graphic.findOne({ type: 'banner' }).sort({ uploadedAt: -1 }).lean();
+    const logo = await Graphic.findOne({ type: 'logo' }).sort({ uploadedAt: -1 }).lean();
+    const siteConfig = (await Icon.findOne({}).lean()) || { blogIcon: '✱' };
+
+    res.locals.url = process.env.URL;
+    res.locals.success = req.flash('success');
+    res.locals.currentPath = req.path;
+    res.locals.error = req.flash('error');
+    res.locals.siteConfig = siteConfig;
+    res.locals.graphics = { banner, logo };
+    res.locals.user = req.isAuthenticated() ? req.user : null;
+
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
 const port = 4000;

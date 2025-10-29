@@ -2,7 +2,7 @@
 
 
   <!-- HERO -->
-  <section class="bg-[url('/images/bg.png')] bg-cover bg-center text-white min-h-[40vh] flex items-center justify-center">
+  <section style="background-image: url('<%= graphics.banner?.path %>'); background-color: rgba(0,0,0,0.5); background-blend-mode: multiply" class="bg-cover bg-center bg-blue-600 text-white min-h-[40vh] flex items-center justify-center">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4">Debate Transcripts</h1>
@@ -16,9 +16,9 @@
   <!-- Transcripts grid: symmetrical cards -->
   <main class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="mb-8 flex items-center justify-between">
+      <div class="mb-8 flex flex-col lg:flex-row items-center justify-between">
         <h2 class="text-2xl font-heading font-semibold text-gray-900">Transcripts</h2>
-        <p class="text-sm text-gray-600">Sorted by newest first</p>
+        <p class="text-sm text-gray-600 text-center">Sorted by newest first</p>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -28,7 +28,7 @@
 
             <div class="flex items-start gap-4">
               <div class="flex-shrink-0">
-                <div class="w-14 h-14 aspect-square rounded-lg bg-primary-500 flex items-center justify-center text-white text-lg font-semibold"><%= siteConfig.icon %></div>
+                <div class="w-14 h-14 aspect-square rounded-lg bg-blue-500 flex items-center justify-center text-white text-lg font-semibold"><%= siteConfig.icon %></div>
               </div>
 
               <div class="flex-1 min-w-0">

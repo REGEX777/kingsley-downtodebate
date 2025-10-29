@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Graphics - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/output.css">
+    <script src="https://kit.fontawesome.com/82eb69e53c.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-black text-white font-sans antialiased">
+    <%- include('../partials/alerts') -%>
+
+    <div class="min-h-screen flex flex-col md:flex-row">
+        <%- include('_sidebar') -%>
+        <main class="flex-1 p-8 flex flex-col items-center justify-start gap-5">
+            <div class="w-full min-h-[10rem] bg-[#101828] rounded-lg px-10 py-10">
+                <% if(banner){ %> 
+                    <p>Current Banner</p>
+                    <img class="mb-5 h-[10rem]" src="<%= banner.path %>" alt="" srcset="">
+                <% } %>
+                <form action="/admin/graphics/banner" method="post" id="bannerForm" enctype="multipart/form-data" class="flex flex-col items-start justify-center gap-5 w-full">
+                    <label class="block text-lg font-medium text-white" for="file_input_banner">Upload Banner (1654x365)</label>
+                    <input accept="image/*" class="block w-full text-sm text-white rounded-lg cursor-pointer bg-black" id="file_input_banner" name="banner" type="file">
+                    <div id="bannerPreviewWrap" class="w-full mt-4 hidden">
+                        <div class="relative rounded-md overflow-hidden border border-gray-700 bg-[#0b1220]">
+                            <img id="bannerPreview" class="w-full max-h-64 object-contain" alt="banner preview">
+                            <button id="bannerRemove" type="button" class="absolute top-3 right-3 py-1 px-2 rounded-md bg-red-600 text-white text-sm">Delete</button>
+                        </div>
+                    </div>
+                    <button type="submit" class="py-2 px-4 rounded-lg bg-red-500">Submit</button>
+                </form>
+            </div>
+
+            <div class="w-full min-h-[10rem] bg-[#101828] rounded-lg px-10 py-10">
+                <% if(logo){ %> 
+                    <p>Current Logo</p>
+                    <img class="mb-5 h-[10rem]" src="<%= logo.path %>" alt="" srcset="">
+                <% } %>
+                <form action="/admin/graphics/logo" method="post" id="logoForm" enctype="multipart/form-data" class="flex flex-col items-start justify-center gap-5 w-full">
+                    <label class="block text-lg font-medium text-white" for="file_input_logo">Upload Logo</label>
+                    <input accept="image/*" class="block w-full text-sm text-white rounded-lg cursor-pointer bg-black" id="file_input_logo" name="logo" type="file">
+                    <div id="logoPreviewWrap" class="w-48 mt-4 hidden">
+                        <div class="relative rounded-md overflow-hidden border border-gray-700 bg-[#0b1220] p-3 flex items-center justify-center">
+                            <img id="logoPreview" class="w-full h-24 object-contain" alt="logo preview">
+                            <button id="logoRemove" type="button" class="absolute top-3 right-3 py-1 px-2 rounded-md bg-red-600 text-white text-sm">Delete</button>
+                        </div>
+                    </div>
+                    <button type="submit" class="py-2 px-4 rounded-lg bg-red-500">Submit</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const setupPreview = (fileInput, previewWrap, previewImg, removeBtn) => {
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) {
+                    previewWrap.classList.add('hidden');
+                    previewImg.removeAttribute('src');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    previewImg.src = ev.target.result;
+                    previewWrap.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            });
+            removeBtn.addEventListener('click', () => {
+                fileInput.value = '';
+                previewImg.removeAttribute('src');
+                previewWrap.classList.add('hidden');
+            });
+        };
+
+        const bannerInput = document.getElementById('file_input_banner');
+        const bannerPreviewWrap = document.getElementById('bannerPreviewWrap');
+        const bannerPreview = document.getElementById('bannerPreview');
+        const bannerRemove = document.getElementById('bannerRemove');
+
+        const logoInput = document.getElementById('file_input_logo');
+        const logoPreviewWrap = document.getElementById('logoPreviewWrap');
+        const logoPreview = document.getElementById('logoPreview');
+        const logoRemove = document.getElementById('logoRemove');
+
+        setupPreview(bannerInput, bannerPreviewWrap, bannerPreview, bannerRemove);
+        setupPreview(logoInput, logoPreviewWrap, logoPreview, logoRemove);
+
+        document.getElementById('bannerForm').addEventListener('submit', (e) => {
+            const file = bannerInput.files && bannerInput.files[0];
+            if (!file) {
+                e.preventDefault();
+            }
+        });
+
+        document.getElementById('logoForm').addEventListener('submit', (e) => {
+            const file = logoInput.files && logoInput.files[0];
+            if (!file) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin Dashboard - newss</title>
+    <title>Debate Settings - Admin Dashboard</title>
     <link rel="stylesheet" href="/css/output.css">
     <script src="https://kit.fontawesome.com/82eb69e53c.js" crossorigin="anonymous"></script>
 </head>
@@ -33,7 +33,7 @@
                 <% if(formats.length === 0){ %> 
                     <p class="text-base font-medium text-gray-600 w-full">No formats added yet, please use the form above to add one.</p>
                 <% } %>
-                <div class="w-full grid grid-cols-4 gap-5">
+                <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     <% formats.forEach(f =>{ %> 
                         <div class="w-full py-5 min-h-10 bg-[#000000] rounded-lg flex items-center justify-between px-5">
                             <p class="text-lg font-medium"><%= f.name %></p>
@@ -61,7 +61,7 @@
                 <% if(topics.length === 0){ %> 
                     <p class="text-base font-medium text-gray-600 w-full">No topics added yet, please use the form above to add one.</p>
                 <% } %>
-                <div class="w-full grid grid-cols-4 gap-5">
+                <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     <% topics.forEach(f =>{ %> 
                         <div class="w-full py-5 min-h-10 bg-[#000000] rounded-lg flex items-center justify-between px-5">
                             <p class="text-lg font-medium"><%= f.name %></p>

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin Dashboard - Motions</title>
+  <title>Motions - Admin Dashboard</title>
   <link rel="stylesheet" href="/css/output.css">
 </head>
 
@@ -69,10 +69,10 @@
           <div id="motionsList" class="space-y-4">
             <% (motion.motions || []).forEach(function(m, i) { %>
             <div class="motion-item bg-gray-700 p-4 rounded-lg border border-gray-600" data-index="<%= i %>">
-              <div class="flex items-start justify-between gap-4 mb-3">
+              <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 mb-3">
                 <div class="flex items-center gap-3 flex-1">
                   <div
-                    class="w-8 h-8 rounded bg-gradient-to-br from-cyan-600 to-violet-600 flex items-center justify-center text-white text-sm font-bold">
+                    class="w-8 h-8 rounded bg-cyan-600 flex items-center justify-center text-white text-sm font-bold">
                     <%= (i+1) %>
                   </div>
                   <div class="flex-1">
